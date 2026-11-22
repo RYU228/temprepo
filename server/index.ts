@@ -156,7 +156,8 @@ if (fs.existsSync(dist)) {
 }
 
 const PORT = Number(process.env.PORT || 3001);
-app.listen(PORT, () => {
-  console.log(`AI 오피스 서버: http://localhost:${PORT}  (${DEMO_MODE ? "데모 모드" : `모델 ${MODEL}`})`);
+const HOST = process.env.HOST || "0.0.0.0"; // 배포 시 127.0.0.1 로 두고 nginx 뒤에서 실행
+app.listen(PORT, HOST, () => {
+  console.log(`AI 오피스 서버: http://${HOST}:${PORT}  (${DEMO_MODE ? "데모 모드" : `모델 ${MODEL}`})`);
   for (const d of q.departments()) enqueue(d.id); // 재시작 전 대기 중이던 업무 이어서 처리
 });

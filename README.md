@@ -62,6 +62,29 @@ http://localhost:3001 에서 빌드된 화면과 API를 함께 제공합니다.
 | `CLAUDE_MODEL` | 사용할 모델 | `claude-opus-5-5` |
 | `DEMO_MODE` | `1`이면 키가 있어도 데모 모드 | - |
 | `PORT` | 서버 포트 | `3001` |
+| `HOST` | 서버가 받을 주소 (배포 시 `127.0.0.1`) | `0.0.0.0` |
+
+## 서버 배포 (오라클 클라우드 Ubuntu)
+
+서버에 SSH로 접속한 뒤 실행합니다.
+
+```bash
+git clone https://github.com/RYU228/temprepo ~/ai-office
+```
+
+```bash
+bash ~/ai-office/deploy/setup.sh
+```
+
+스크립트가 Node.js, nginx, 자동 실행 서비스, 접속 비밀번호, 서버 방화벽(80번)을 설정합니다.
+오라클 콘솔의 Security List에서도 80번 포트를 열어야 외부에서 접속됩니다.
+
+- API 키 설정: `sudo nano /etc/ai-office.env` 에서 `ANTHROPIC_API_KEY=` 뒤에 키를 넣고 `sudo systemctl restart ai-office`
+- 코드 업데이트: `bash ~/ai-office/deploy/update.sh`
+- 로그 확인: `sudo journalctl -u ai-office -f`
+- 비밀번호 변경: `sudo htpasswd /etc/nginx/.ai-office-htpasswd <아이디>`
+
+도메인 없이 IP로 접속하면 HTTP라서 비밀번호가 암호화되지 않고 전송됩니다. 중요한 서비스로 쓰려면 HTTPS를 붙이세요.
 
 ## 구조
 
