@@ -80,9 +80,24 @@ bash ~/ai-office/deploy/setup.sh
 오라클 콘솔의 Security List에서도 80번 포트를 열어야 외부에서 접속됩니다.
 
 - API 키 설정: `sudo nano /etc/ai-office.env` 에서 `ANTHROPIC_API_KEY=` 뒤에 키를 넣고 `sudo systemctl restart ai-office`
-- 코드 업데이트: `bash ~/ai-office/deploy/update.sh`
+- 코드 업데이트(수동): `bash ~/ai-office/deploy/update.sh`
+- 자동 업데이트 켜기: `bash ~/ai-office/deploy/enable-auto-update.sh` (아래 참고)
 - 로그 확인: `sudo journalctl -u ai-office -f`
 - 비밀번호 변경: `sudo htpasswd /etc/nginx/.ai-office-htpasswd <아이디>`
+
+### 자동 업데이트
+
+켜 두면 서버가 3분마다 GitHub `main` 브랜치를 확인해서 새 코드를 반영합니다. 서버에 접속할 필요가 없습니다.
+
+```bash
+bash ~/ai-office/deploy/enable-auto-update.sh
+```
+
+- 타입 검사나 빌드가 실패하면 반영하지 않고 지금 버전을 유지합니다.
+- 새 버전이 시작되지 않으면 이전 버전으로 되돌립니다.
+- 실패한 버전은 다시 시도하지 않고, 새 커밋이 올라오면 그때 다시 시도합니다.
+- 기록 보기: `sudo journalctl -u ai-office-update -n 30`
+- 끄기: `sudo systemctl disable --now ai-office-update.timer`
 
 ### HTTPS 적용
 
