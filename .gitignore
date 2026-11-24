@@ -2,3 +2,7 @@ node_modules
 dist
 data
 .env
+dist-next
+dist-old
+.auto-update-failed
+.auto-update.lock
