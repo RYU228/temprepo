@@ -84,7 +84,16 @@ bash ~/ai-office/deploy/setup.sh
 - 로그 확인: `sudo journalctl -u ai-office -f`
 - 비밀번호 변경: `sudo htpasswd /etc/nginx/.ai-office-htpasswd <아이디>`
 
-도메인 없이 IP로 접속하면 HTTP라서 비밀번호가 암호화되지 않고 전송됩니다. 중요한 서비스로 쓰려면 HTTPS를 붙이세요.
+### HTTPS 적용
+
+도메인이 없어도 [sslip.io](https://sslip.io) 주소(`1-2-3-4.sslip.io`)와 Let's Encrypt 무료 인증서로 HTTPS를 쓸 수 있습니다.
+오라클 콘솔 Security List에서 443번 포트를 연 뒤 실행합니다.
+
+```bash
+bash ~/ai-office/deploy/enable-https.sh
+```
+
+인증서는 자동으로 갱신됩니다. 나중에 도메인이 생기면 `bash deploy/enable-https.sh 내도메인.com` 으로 다시 실행하면 됩니다.
 
 ## 구조
 

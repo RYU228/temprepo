@@ -99,6 +99,9 @@ sudo chown root:www-data "$HTPASSWD"
 sudo chmod 640 "$HTPASSWD"
 
 step "8/8 웹서버(nginx)와 방화벽 설정"
+if sudo grep -q ssl_certificate "$SITE" 2>/dev/null; then
+  echo "HTTPS가 설정된 nginx 설정이 있어 그대로 유지합니다."
+else
 sudo tee "$SITE" >/dev/null <<EOF
 server {
     listen 80 default_server;
@@ -122,6 +125,7 @@ server {
     }
 }
 EOF
+fi
 sudo ln -sf "$SITE" /etc/nginx/sites-enabled/ai-office
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
