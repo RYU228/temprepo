@@ -77,7 +77,7 @@ if ! build "$OLD" "$NEW"; then
 fi
 
 swap_dist
-sudo systemctl restart ai-office
+sudo systemctl restart ai-office 9>&-  # 잠금을 앱에 넘기지 않음
 if healthy; then
   rm -f "$FAILED_FILE"
   rm -rf dist-old
@@ -88,7 +88,7 @@ fi
 log "새 버전이 시작되지 않음 → 이전 버전(${OLD:0:7})으로 되돌림"
 rollback_code
 if [ -d dist-old ]; then rm -rf dist && mv dist-old dist; fi
-sudo systemctl restart ai-office
+sudo systemctl restart ai-office 9>&-  # 잠금을 앱에 넘기지 않음
 healthy && log "이전 버전으로 복구했습니다." || log "복구 후에도 시작되지 않습니다. 'sudo journalctl -u ai-office -n 50'으로 확인하세요."
 echo "$NEW" >"$FAILED_FILE"
 exit 1
